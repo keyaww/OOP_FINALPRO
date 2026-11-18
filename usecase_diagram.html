@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Revisi Use Case Diagram — Game Biliard</title>
+  <style>
+    :root {
+      --bg: #f1f5f9;
+      --card-bg: #ffffff;
+      --border: #cbd5e1;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --primary: #2563eb;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: var(--bg); color: var(--text); padding: 30px 20px; }
+
+    .container { max-width: 1050px; margin: 0 auto; }
+    header { text-align: center; margin-bottom: 25px; }
+    h1 { font-size: 26px; color: #1e293b; font-weight: 800; margin-bottom: 6px; }
+    p.subtitle { color: var(--text-muted); font-size: 14px; }
+
+    .switch-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
+    .tab-btn {
+      padding: 8px 18px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: white;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+    .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+    .diagram-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 30px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+      margin-bottom: 30px;
+    }
+
+    svg { width: 100%; height: auto; display: block; margin: 0 auto; }
+
+    /* SVG Elements */
+    .system-boundary { fill: #f8fafc; stroke: #94a3b8; stroke-dasharray: 6,6; stroke-width: 2; rx: 14; }
+    .system-title { fill: #475569; font-weight: 800; font-size: 15px; letter-spacing: 0.5px; }
+
+    .actor-box { fill: #3b82f6; rx: 12; }
+    .actor-text { fill: #ffffff; font-weight: 700; font-size: 13px; text-anchor: middle; dominant-baseline: central; }
+
+    .usecase-oval { rx: 24; ry: 24; stroke-width: 2; cursor: pointer; transition: transform 0.2s; }
+    .usecase-oval:hover { filter: brightness(0.95); }
+    .uc-green  { fill: #86efac; stroke: #22c55e; }
+    .uc-yellow { fill: #fde047; stroke: #eab308; }
+    .uc-blue   { fill: #93c5fd; stroke: #3b82f6; }
+    .uc-pink   { fill: #fca5a5; stroke: #ef4444; }
+    .uc-purple { fill: #d8b4fe; stroke: #a855f7; }
+
+    .uc-text-title { font-weight: 700; font-size: 13px; fill: #0f172a; text-anchor: middle; dominant-baseline: central; }
+    .uc-text-step { font-size: 10px; font-weight: 600; fill: #475569; text-anchor: middle; }
+
+    .line-assoc { stroke: #334155; stroke-width: 2; }
+    .line-include { stroke: #64748b; stroke-width: 1.5; stroke-dasharray: 5,4; marker-end: url(#arrow-inc); }
+    .include-label { fill: #64748b; font-size: 11px; font-style: italic; font-weight: 600; text-anchor: middle; }
+
+    /* Table mapping */
+    .mapping-table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
+    .mapping-table th { background: #f8fafc; padding: 12px 16px; font-size: 13px; font-weight: 700; text-align: left; border-bottom: 2px solid var(--border); color: #334155; }
+    .mapping-table td { padding: 12px 16px; font-size: 13px; border-bottom: 1px solid #e2e8f0; color: #1e293b; line-height: 1.5; vertical-align: top; }
+    .mapping-table tr:last-child td { border-bottom: none; }
+    .badge { display: inline-block; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+    .badge-user { background: #dbeafe; color: #1e40af; }
+    .badge-system { background: #fef3c7; color: #92400e; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>🎱 Revisi Use Case Diagram — Game Biliard</h1>
+      <p class="subtitle">Disesuaikan secara presisi dengan 8 Langkah Skenario & Standar Kaidah UML</p>
+    </header>
+
+    <div class="switch-tabs">
+      <button class="tab-btn active" onclick="showView('standar')">Versi Standar UML (Rekomendasi Akademik)</button>
+      <button class="tab-btn" onclick="showView('simplified')">Versi Sederhana (Mirip Desain Asli)</button>
+    </div>
+
+    <div class="diagram-card">
+      <!-- SVG UML Standar -->
+      <div id="view-standar">
+        <svg viewBox="0 0 920 600">
+          <defs>
+            <marker id="arrow-inc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1 L 9 5 L 0 9 z" fill="#64748b" />
+            </marker>
+          </defs>
+
+          <!-- System Boundary -->
+          <rect x="230" y="30" width="660" height="540" class="system-boundary" />
+          <text x="250" y="60" class="system-title">SISTEM GAME BILIARD (SFML)</text>
+
+          <!-- Actor (Stick Figure & Label) -->
+          <!-- Head -->
+          <circle cx="90" cy="240" r="18" fill="#1e293b" />
+          <!-- Body -->
+          <line x1="90" y1="258" x2="90" y2="310" stroke="#1e293b" stroke-width="4" />
+          <!-- Arms -->
+          <line x1="90" y1="275" x2="60" y2="295" stroke="#1e293b" stroke-width="3.5" />
+          <line x1="90" y1="275" x2="120" y2="295" stroke="#1e293b" stroke-width="3.5" />
+          <!-- Legs -->
+          <line x1="90" y1="310" x2="65" y2="355" stroke="#1e293b" stroke-width="3.5" />
+          <line x1="90" y1="310" x2="115" y2="355" stroke="#1e293b" stroke-width="3.5" />
+          
+          <!-- Actor Label Box -->
+          <rect x="15" y="370" width="150" height="42" class="actor-box" />
+          <text x="90" y="386" class="actor-text">Pemain / Pengguna</text>
+          <text x="90" y="402" class="actor-text" style="font-size:10px; font-weight:normal; opacity:0.9;">(User)</text>
+
+          <!-- Association Lines from Actor -->
+          <!-- To UC1 -->
+          <line x1="120" y1="275" x2="270" y2="105" class="line-assoc" />
+          <!-- To UC2 -->
+          <line x1="120" y1="275" x2="270" y2="200" class="line-assoc" />
+          <!-- To UC3 -->
+          <line x1="120" y1="275" x2="270" y2="315" class="line-assoc" />
+          <!-- To UC4 -->
+          <line x1="120" y1="275" x2="270" y2="430" class="line-assoc" />
+          <!-- To UC5 -->
+          <line x1="120" y1="275" x2="270" y2="520" class="line-assoc" />
+
+          <!-- UC 1: Membuka Program -->
+          <g>
+            <rect x="270" y="80" width="260" height="52" rx="26" class="usecase-oval uc-green" />
+            <text x="400" y="101" class="uc-text-title">Membuka Aplikasi Game</text>
+            <text x="400" y="118" class="uc-text-step">Langkah 1 & 2 (Inisialisasi Window & Menu)</text>
+          </g>
+
+          <!-- UC 2: Memulai Permainan -->
+          <g>
+            <rect x="270" y="175" width="260" height="52" rx="26" class="usecase-oval uc-yellow" />
+            <text x="400" y="196" class="uc-text-title">Memulai Permainan (Play)</text>
+            <text x="400" y="213" class="uc-text-step">Langkah 3 & 4 (Menampilkan Meja & Rak Bola)</text>
+          </g>
+
+          <!-- UC 3: Membidik & Menembak Bola -->
+          <g>
+            <rect x="270" y="290" width="260" height="54" rx="26" class="usecase-oval uc-blue" />
+            <text x="400" y="311" class="uc-text-title">Membidik & Memukul Bola</text>
+            <text x="400" y="328" class="uc-text-step">Langkah 5 (Arah Kursor & Kekuatan Stik)</text>
+          </g>
+
+          <!-- Included System Use Cases (Step 6 & 7) -->
+          <!-- <<include>> 1: Simulasi Fisika -->
+          <g>
+            <rect x="620" y="240" width="245" height="50" rx="25" class="usecase-oval uc-purple" />
+            <text x="742" y="260" class="uc-text-title">Simulasi Fisika & Pantulan</text>
+            <text x="742" y="276" class="uc-text-step">Langkah 6 (Tumbukan Bola & Dinding)</text>
+          </g>
+          <!-- <<include>> 2: Deteksi Masuk Lubang -->
+          <g>
+            <rect x="620" y="335" width="245" height="50" rx="25" class="usecase-oval uc-purple" />
+            <text x="742" y="355" class="uc-text-title">Deteksi Bola Masuk Lubang</text>
+            <text x="742" y="371" class="uc-text-step">Langkah 7 (Hapus Bola & Update Skor)</text>
+          </g>
+
+          <!-- Include Lines with <<include>> label -->
+          <path d="M 530 305 L 615 275" class="line-include" />
+          <text x="568" y="280" class="include-label">&lt;&lt;include&gt;&gt;</text>
+
+          <path d="M 530 325 L 615 350" class="line-include" />
+          <text x="568" y="348" class="include-label">&lt;&lt;include&gt;&gt;</text>
+
+          <!-- UC 4: Melihat Layar Akhir -->
+          <g>
+            <rect x="270" y="405" width="260" height="52" rx="26" class="usecase-oval uc-pink" />
+            <text x="400" y="426" class="uc-text-title">Melihat Layar Akhir / Hasil</text>
+            <text x="400" y="443" class="uc-text-step">Langkah 8 (Kemenangan Solids/Stripes)</text>
+          </g>
+
+          <!-- UC 5: Mengulang / Menutup -->
+          <g>
+            <rect x="270" y="495" width="260" height="52" rx="26" class="usecase-oval uc-pink" />
+            <text x="400" y="516" class="uc-text-title">Mengulang / Menutup Program</text>
+            <text x="400" y="533" class="uc-text-step">Tombol Continue (Reset) atau Quit</text>
+          </g>
+        </svg>
+      </div>
+
+      <!-- SVG Simplified Version (Direct mapping) -->
+      <div id="view-simplified" style="display:none;">
+        <svg viewBox="0 0 850 540">
+          <!-- Actor (Stick Figure & Label) -->
+          <circle cx="90" cy="230" r="18" fill="#1e293b" />
+          <line x1="90" y1="248" x2="90" y2="300" stroke="#1e293b" stroke-width="4" />
+          <line x1="90" y1="265" x2="60" y2="285" stroke="#1e293b" stroke-width="3.5" />
+          <line x1="90" y1="265" x2="120" y2="285" stroke="#1e293b" stroke-width="3.5" />
+          <line x1="90" y1="300" x2="65" y2="345" stroke="#1e293b" stroke-width="3.5" />
+          <line x1="90" y1="300" x2="115" y2="345" stroke="#1e293b" stroke-width="3.5" />
+          
+          <rect x="15" y="360" width="150" height="42" class="actor-box" />
+          <text x="90" y="376" class="actor-text">Pemain / Pengguna</text>
+          <text x="90" y="392" class="actor-text" style="font-size:10px; font-weight:normal; opacity:0.9;">Program</text>
+
+          <!-- Association Lines -->
+          <line x1="120" y1="265" x2="310" y2="65" class="line-assoc" />
+          <line x1="120" y1="265" x2="310" y2="160" class="line-assoc" />
+          <line x1="120" y1="265" x2="310" y2="255" class="line-assoc" />
+          <line x1="120" y1="265" x2="310" y2="350" class="line-assoc" />
+          <line x1="120" y1="265" x2="310" y2="445" class="line-assoc" />
+
+          <!-- Oval 1: Membuka Program -->
+          <g>
+            <rect x="310" y="38" width="460" height="54" rx="27" class="usecase-oval uc-green" />
+            <text x="540" y="60" class="uc-text-title">Membuka Program Game Biliard</text>
+            <text x="540" y="78" class="uc-text-step">(Langkah 1 & 2: Inisialisasi Window SFML, Aset & Menu Utama)</text>
+          </g>
+
+          <!-- Oval 2: Memulai Permainan -->
+          <g>
+            <rect x="310" y="133" width="460" height="54" rx="27" class="usecase-oval uc-yellow" />
+            <text x="540" y="155" class="uc-text-title">Memulai Permainan</text>
+            <text x="540" y="173" class="uc-text-step">(Langkah 3 & 4: Klik Mulai & Tampilkan Arena Meja Beserta Bola)</text>
+          </g>
+
+          <!-- Oval 3: Membidik & Menembak Bola -->
+          <g>
+            <rect x="310" y="228" width="460" height="54" rx="27" class="usecase-oval uc-blue" />
+            <text x="540" y="250" class="uc-text-title">Mengatur Sudut & Kekuatan Tembakan Bola</text>
+            <text x="540" y="268" class="uc-text-step">(Langkah 5, 6, 7: Kontrol Stik, Tumbukan Meja & Masuk Lubang)</text>
+          </g>
+
+          <!-- Oval 4: Layar Akhir Permainan -->
+          <g>
+            <rect x="310" y="323" width="460" height="54" rx="27" class="usecase-oval uc-green" />
+            <text x="540" y="345" class="uc-text-title">Melihat Layar Akhir Permainan (Hasil Kemenangan)</text>
+            <text x="540" y="363" class="uc-text-step">(Langkah 8: Ditampilkan saat kondisi selesai tercapai)</text>
+          </g>
+
+          <!-- Oval 5: Mengulang / Menutup -->
+          <g>
+            <rect x="310" y="418" width="460" height="54" rx="27" class="usecase-oval uc-pink" />
+            <text x="540" y="440" class="uc-text-title">Mengulang / Menutup Program</text>
+            <text x="540" y="458" class="uc-text-step">(Tombol Continue kembali ke awal atau tombol Quit)</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Mapping Table Explanation -->
+    <h2 style="font-size:18px; margin-bottom:12px; color:#1e293b;">📋 Tabel Penyelarasan Langkah Skenario ke Use Case</h2>
+    <table class="mapping-table">
+      <thead>
+        <tr>
+          <th style="width: 80px;">Langkah</th>
+          <th style="width: 320px;">Deskripsi Langkah Skenario</th>
+          <th>Use Case Hasil Revisi</th>
+          <th style="width: 140px;">Keterangan UML</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1 & 2</strong></td>
+          <td>User memulai aplikasi & SFML menginisialisasi window serta menu utama.</td>
+          <td><strong>Membuka Aplikasi Game Biliard</strong></td>
+          <td><span class="badge badge-user">Aksi Aktor</span></td>
+        </tr>
+        <tr>
+          <td><strong>3 & 4</strong></td>
+          <td>User menekan "Mulai Permainan" & sistem menampilkan meja dan susunan bola.</td>
+          <td><strong>Memulai Permainan (Play)</strong></td>
+          <td><span class="badge badge-user">Aksi Aktor</span></td>
+        </tr>
+        <tr>
+          <td><strong>5</strong></td>
+          <td>User mengatur sudut arah dengan kursor dan tombol kekuatan tembakan.</td>
+          <td><strong>Membidik & Memukul Bola</strong></td>
+          <td><span class="badge badge-user">Aksi Aktor</span></td>
+        </tr>
+        <tr>
+          <td><strong>6</strong></td>
+          <td>Sistem memproses stik, simulasi fisika & deteksi tumbukan dinding.</td>
+          <td><em>Simulasi Fisika & Deteksi Tumbukan</em></td>
+          <td><span class="badge badge-system">&lt;&lt;include&gt;&gt; Sistem</span></td>
+        </tr>
+        <tr>
+          <td><strong>7</strong></td>
+          <td>Sistem mendeteksi bola masuk lubang meja dan update status.</td>
+          <td><em>Deteksi Bola Masuk Lubang</em></td>
+          <td><span class="badge badge-system">&lt;&lt;include&gt;&gt; Sistem</span></td>
+        </tr>
+        <tr>
+          <td><strong>8</strong></td>
+          <td>Jika kondisi selesai tercapai (semua bola habis), sistem menampilkan layar akhir.</td>
+          <td><strong>Melihat Layar Akhir / Hasil Permainan</strong></td>
+          <td><span class="badge badge-user">Aksi Aktor</span></td>
+        </tr>
+        <tr>
+          <td><strong>Tambahan</strong></td>
+          <td>User dapat mengulang permainan (Continue) atau keluar (Quit).</td>
+          <td><strong>Mengulang / Menutup Program</strong></td>
+          <td><span class="badge badge-user">Aksi Aktor</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    function showView(view) {
+      document.querySelectorAll('.tab-btn').forEach((b, i) => {
+        b.classList.toggle('active', (view === 'standar' && i === 0) || (view === 'simplified' && i === 1));
+      });
+      document.getElementById('view-standar').style.display = (view === 'standar') ? 'block' : 'none';
+      document.getElementById('view-simplified').style.display = (view === 'simplified') ? 'block' : 'none';
+    }
+  </script>
+</body>
+</html>
